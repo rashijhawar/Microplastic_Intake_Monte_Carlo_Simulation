@@ -76,7 +76,8 @@ for country in food_data.index:
     )
 
     # Simulate daily intake
-    simulated_microplastic_intake_air = air_breathed_in_daily * daily_air_intake
+    # simulated_microplastic_intake_air = air_breathed_in_daily * daily_air_intake # Temporary values represent inhalation, not MP in air conc (particles/m^3)
+    simulated_microplastic_intake_air = daily_air_intake
     simulated_microplastic_intake_water = daily_water_intake_L * mean_concentration  # particles/day
     simulated_microplastic_intake_food = np.random.normal(loc=food_data.loc[country, 'Daily MP Dietary Intake(mg/capita/day)'],
                                                           scale=food_data.loc[country, 'Daily MP Dietary Intake(mg/capita/day)'] * 0.25,
