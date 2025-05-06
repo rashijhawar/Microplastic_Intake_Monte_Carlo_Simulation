@@ -8,7 +8,7 @@ plt.style.use('seaborn-v0_8-whitegrid')
 warnings.filterwarnings('ignore')
 
 
-def load_data(air_file, food_file, water_file):
+def load_data(air_file: str, food_file: str, water_file: str) -> pd.DataFrame:
     """
     Load and merge microplastic intake data from different sources.
 
@@ -16,6 +16,9 @@ def load_data(air_file, food_file, water_file):
     :param food_file: Path to the food microplastic intake data file.
     :param water_file: Path to the water microplastic intake data file.
     :return: Combined dataset indexed by country.
+
+    >>> load_data('data/air.csv', 'data/food.csv', 'absent_file.csv') # doctest: +ELLIPSIS
+    Error loading data: ...
     """
     try:
         # Load Air Data
@@ -39,16 +42,23 @@ def load_data(air_file, food_file, water_file):
 
     except FileNotFoundError as e:
         print(f"Error loading data: {e}")
-        return None
     
 
-def filter_data(data, countries):
+def filter_data(data: pd.DataFrame, countries: list) -> pd.DataFrame:
     """
     Filter the input DataFrame to include only rows corresponding to the specified countries.
 
     :param data: A DataFrame with countries as the index.
     :param countries: A list of country names to filter the DataFrame on.
     :return: A DataFrame containing only the rows corresponding to the specified countries.
+
+    >>> test_df = pd.DataFrame({'Microplastic Intake': [12, 14, 16, 18, 20]},
+    ... index=['United States', 'United Kingdom', 'India', 'Indonesia', 'Mexico'])
+    >>> output = filter_data(test_df, ['United States', 'United Kingdom', 'India'])
+    >>> sorted(output.index.tolist())
+    ['India', 'United Kingdom', 'United States']
+    >>> int(output.loc['India', 'Microplastic Intake'])
+    16
     """
     return data.loc[countries]
 
@@ -64,9 +74,18 @@ def mod_pert_random(low, likely, high, confidence=4, samples=1000):
     :param confidence: This is typically called 'lambda' in literature about the Modified PERT distribution. 
                        The value 4 here matches the standard PERT curve. 
                        Higher values indicate higher confidence in the mode.
-                       Currently allows values 1-18.
+                       Currently, allows values 1-18.
     :param samples: Number of random samples to generate from the distribution. (Default: 1000)
     :return: A numpy array containing random numbers following the Modified PERT distribution.
+
+    >>> output = mod_pert_random(10, 20, 30, samples=5)
+    >>> len(output)
+    5
+    >>> all(10 <= i <= 30 for i in output)
+    True
+    >>> output = mod_pert_random(10, 20, 30, confidence=19)
+    Traceback (most recent call last):
+    ValueError: confidence value must be in range 1-18.
     """
     if confidence < 1 or confidence > 18:
         raise ValueError('confidence value must be in range 1-18.')
@@ -81,19 +100,30 @@ def mod_pert_random(low, likely, high, confidence=4, samples=1000):
     return beta
 
 
-def run_monte_carlo_simulation(mp_intake_data, simulations=1000):
+def run_monte_carlo_simulation(mp_intake_data: pd.DataFrame, simulations: int = 1000, verbose: bool = True) -> pd.DataFrame:
     """
     Run a Monte Carlo simulation of daily microplastic intake (in mg) per person for countries present in mp_intake_data.
 
     :param mp_intake_data: Microplastic intake data indexed by country.
-    :param simulations: Number of simulations per country.
+    :param simulations: Number of simulations per country. (Default: 1000)
+    :param verbose: A boolean flag to enable printed output.
     :return: A DataFrame containing the simulation results.
+
+    >>> test_df = pd.DataFrame({
+    ... 'Air Microplastic Intake (particles/capita/day)': [1000, 2000, 3000, 4000, 5000],
+    ... 'Food Microplastic Intake (mg/capita/day)': [5, 10, 15, 20, 25],
+    ... 'Water Microplastic Intake (mg/capita/day)': [3, 6, 9, 12, 15]
+    ... }, index=['United States', 'United Kingdom', 'India', 'Indonesia', 'Mexico'])
+    >>> output = run_monte_carlo_simulation(test_df, simulations=10, verbose=False)
+    >>> len(output) == 50
+    True
     """
     results = []
 
     for country in mp_intake_data.index:
         try:
-            print(f"Running simulation for {country}...")
+            if verbose:
+                print(f"Running simulation for {country}...")
 
             # Get country-specific means
             mean_air = mp_intake_data.loc[country, 'Air Microplastic Intake (particles/capita/day)']
@@ -106,14 +136,12 @@ def run_monte_carlo_simulation(mp_intake_data, simulations=1000):
             std_water = mean_water * 0.25
 
             # Lognormal distribution parameters
-            def get_lognormal_params(mean, std):
-                mu = np.log(mean**2 / np.sqrt(std**2 + mean**2))
-                sigma = np.sqrt(np.log(1 + (std**2 / mean**2)))
-                return mu, sigma
+            lognormal_mu = lambda mean, std: np.log(mean ** 2 / np.sqrt(std ** 2 + mean ** 2))
+            lognormal_sigma = lambda mean, std: np.sqrt(np.log(1 + (std ** 2 / mean ** 2)))
 
-            air_mu, air_sigma = get_lognormal_params(mean_air, std_air)
-            food_mu, food_sigma = get_lognormal_params(mean_food, std_food)
-            water_mu, water_sigma = get_lognormal_params(mean_water, std_water)
+            air_mu, air_sigma = lognormal_mu(mean_air, std_air), lognormal_sigma(mean_air, std_air)
+            food_mu, food_sigma = lognormal_mu(mean_food, std_food), lognormal_sigma(mean_food, std_food)
+            water_mu, water_sigma = lognormal_mu(mean_water, std_water), lognormal_sigma(mean_water, std_water)
 
             # Generate samples
             air_samples = np.random.lognormal(air_mu, air_sigma, simulations)
@@ -160,7 +188,7 @@ def run_monte_carlo_simulation(mp_intake_data, simulations=1000):
     return final_results
 
 
-def plot_convergence(simulation_results):
+def plot_convergence(simulation_results: pd.DataFrame) -> None:
     """
     Plot convergence.
     
@@ -192,8 +220,29 @@ def plot_convergence(simulation_results):
     plt.show()
 
 
-def calculate_country_means(simulation_results):
+def calculate_country_means(simulation_results: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
     """
+    Calculates mean values for each country from the simulation results.
+
+    :param simulation_results: A DataFrame containing the simulation results.
+    :param verbose: A boolean flag to enable printed output.
+    :return: A DataFrame containing the mean values for each country.
+
+    >>> test_df = pd.DataFrame({
+    ... 'Country': ['United States', 'United States', 'Indonesia', 'Indonesia'],
+    ... 'Daily_MP_Inhalation': [5, 4, 10, 11],
+    ... 'Daily_MP_Ingestion': [15, 12, 30, 33],
+    ... 'Daily_MP_Total': [20, 16, 40, 44],
+    ... 'Inhalation_Contribution_Pct': [25, 25, 25, 25],
+    ... 'Ingestion_Contribution_Pct': [75, 75, 75, 75]
+    ... })
+    >>> output = calculate_country_means(test_df, verbose=False)
+    >>> output.shape[0] == 2 and output.shape[1] == 6
+    True
+    >>> output.iloc[0]['Country']
+    'Indonesia'
+    >>> float(output.iloc[0]['Daily_MP_Total'])
+    42.0
     """
     country_means = simulation_results.groupby('Country')[
         ['Daily_MP_Inhalation', 'Daily_MP_Ingestion', 'Daily_MP_Total',
@@ -201,23 +250,20 @@ def calculate_country_means(simulation_results):
     ].mean().reset_index()
     country_means.sort_values('Daily_MP_Total', ascending=False, inplace=True)
 
-    # Print mean intake values for each country
-    print("\nMean Microplastic Intake by Country (in mg/day):")
-    print("="*80)
-    print(country_means[['Country', 'Daily_MP_Inhalation', 'Daily_MP_Ingestion', 'Daily_MP_Total']].to_string(index=False))
-    print("="*80)
+    if verbose:
+        print("\nMean Microplastic Intake by Country (in mg/day):")
+        print("="*80)
+        print(country_means[['Country', 'Daily_MP_Inhalation', 'Daily_MP_Ingestion', 'Daily_MP_Total']].to_string(index=False))
+        print("="*80)
 
     return country_means
 
 
-def plot_total_daily_mp_intake(country_means):
+def plot_total_daily_mp_intake(country_means: pd.DataFrame) -> None:
     """
-    Create bar charts showing microplastic intake by source (inhalation vs. ingestion).
-    
-    Parameters:
-    -----------
-    final_results : pandas.DataFrame
-        DataFrame containing simulation results.
+    Create a bar chart showing total daily microplastic intake by country.
+
+    :param country_means: A DataFrame containing the mean values for each country.
     """
     plt.figure(figsize=(12, 6))
     
@@ -237,7 +283,14 @@ def plot_total_daily_mp_intake(country_means):
     plt.show()
     
 
-def plot_microplastic_source_breakdown(country_means):
+def plot_microplastic_source_breakdown(country_means: pd.DataFrame) -> None:
+    """
+    Create a stacked bar chart showing the percentage breakdown of microplastic intake sources by country.
+    This function visualizes the relative contributions of inhalation (air) and
+    ingestion (food + water) to total microplastic exposure across different countries.
+
+    :param country_means: A DataFrame containing the mean values for each country.
+    """
     plt.figure(figsize=(12, 6))
     
     inhalation_pct = country_means['Inhalation_Contribution_Pct']
@@ -267,7 +320,13 @@ def plot_microplastic_source_breakdown(country_means):
     plt.show()
     
 
-def plot_intake_over_a_year(country_means, country):
+def plot_intake_over_a_year(country_means: pd.DataFrame, country: str) -> None:
+    """
+    Create a line plot showing cumulative microplastic intake over a year for a specific country.
+
+    :param country_means: A DataFrame containing the mean values for each country.
+    :param country: The name of the country to plot, must match a value in the 'Country' column of country_means.
+    """
     daily_total_mg = country_means.loc[country_means['Country'] == country, 'Daily_MP_Total'].values[0]
     daily_total_g = daily_total_mg / 1000 
 
@@ -284,7 +343,15 @@ def plot_intake_over_a_year(country_means, country):
     plt.show()
 
 
-def load_country_indicators_data(country_means):
+def load_country_indicators_data(country_means: pd.DataFrame) -> pd.DataFrame:
+    """
+    Load and merge country indicator data from multiple sources with microplastic data.
+    This function combines GDP data, waste management metrics, development status classifications,
+    and microplastic measurements into a single comprehensive dataset for analysis.
+
+    :param country_means: A DataFrame containing the mean values for each country.
+    :return: A DataFrame containing the combined indicator data.
+    """
     # Read GDP data
     gdp_data = pd.read_csv("Data/World_GDP_Data.csv", skiprows=4)
     gdp_data = gdp_data[['Country Name', '2023']]
@@ -361,7 +428,12 @@ def load_country_indicators_data(country_means):
     return merged_data
 
 
-def plot_gdp_vs_mp_intake(country_data):
+def plot_gdp_vs_mp_intake(country_data: pd.DataFrame) -> None:
+    """
+    Create a scatter plot to visualize the correlation between countries' GDP and microplastic intake.
+
+    :param country_data: A DataFrame containing the combined indicator data.
+    """
     plt.figure(figsize=(12, 6))
     sns.scatterplot(data=country_data, x='GDP (Million US$)', y='Daily_MP_Total', 
                     hue='Development Status', palette={'Developed': 'limegreen', 'Developing': 'gold'})
@@ -377,7 +449,12 @@ def plot_gdp_vs_mp_intake(country_data):
     plt.show()
 
 
-def plot_mismanaged_waste_vs_mp_intake(country_data):
+def plot_mismanaged_waste_vs_mp_intake(country_data: pd.DataFrame) -> None:
+    """
+    Create a scatter plot to visualize the correlation between mismanaged plastic waste per capita and microplastic intake.
+
+    :param country_data: A DataFrame containing the combined indicator data.
+    """
     plt.figure(figsize=(12, 6))
     sns.scatterplot(data=country_data, x='Mismanaged plastic waste per capita (kg per year)', y='Daily_MP_Total', 
                     hue='Development Status', palette={'Developed': 'limegreen', 'Developing': 'gold'})
