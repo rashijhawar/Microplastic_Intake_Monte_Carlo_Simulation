@@ -56,6 +56,9 @@ def main():
     # Plot visualizations with country indicators
     plot_gdp_vs_mp_intake(country_data)
     plot_mismanaged_waste_vs_mp_intake(country_data)
+
+    # Plot total microplastic intake on the world map
+    plot_total_mp_intake_on_map(country_means)
     
     print("\nAnalysis complete!")
 

@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import warnings
+from geopy.geocoders import Nominatim
+import time
+import plotly.express as px
 
 plt.style.use('seaborn-v0_8-whitegrid')
 warnings.filterwarnings('ignore')
@@ -66,6 +69,42 @@ def plot_microplastic_source_breakdown(country_means: pd.DataFrame) -> None:
     plt.tight_layout(rect=[0, 0, 0.8, 1])
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.show()
+
+
+def plot_total_mp_intake_on_map(country_means: pd.DataFrame) -> None:
+    """
+    Plot the average daily microplastic intake per capita on a world map.
+
+    :param country_means: A DataFrame containing the mean values for each country.
+    """
+    geolocator = Nominatim(user_agent="geoapi")
+    
+    latitudes = []
+    longitudes = []
+    for country in country_means['Country'].tolist():
+        try:
+            location = geolocator.geocode(country, timeout=10)
+            latitudes.append(location.latitude)
+            longitudes.append(location.longitude)
+        except:
+            latitudes.append(None)
+            longitudes.append(None)
+        time.sleep(1)
+
+    country_means['Latitude'] = latitudes
+    country_means['Longitude'] = longitudes
+
+    fig = px.choropleth(
+        country_means,
+        locations="Country",
+        locationmode="country names",
+        color="Daily_MP_Total",
+        color_continuous_scale="Reds",
+        title="Global Microplastic Intake per Capita (mg/day)",
+    )
+
+    fig.update_layout(geo=dict(showframe=False, showcoastlines=True))
+    fig.show()
 
 
 def plot_gdp_vs_mp_intake(country_data: pd.DataFrame) -> None:
