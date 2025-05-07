@@ -32,7 +32,6 @@ def load_data(air_file: str, food_file: str, water_file: str) -> pd.DataFrame:
 
         # Combine Air, Food, and Water Data
         mp_air_water_intake_data = mp_air_intake_data.join(mp_water_intake_data, how='inner')
-        #food_data = food_intake_data.join(food_mp_conc_data, how='inner')
 
         return mp_air_water_intake_data, food_intake_data, food_mp_conc_data
 
