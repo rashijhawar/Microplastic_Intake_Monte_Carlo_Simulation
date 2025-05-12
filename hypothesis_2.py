@@ -26,7 +26,6 @@ def run_monte_carlo_simulation(file_path, n_simulations=2000, std_fraction=0.25)
 
     Parameters:
     - file_path (str): Path to the Excel file containing MP intake means.
-    - sheet (str): Sheet name within the Excel file.
     - n_simulations (int): Number of simulation iterations.
     - std_fraction (float): Fraction of the mean to use as standard deviation.
 
@@ -35,9 +34,13 @@ def run_monte_carlo_simulation(file_path, n_simulations=2000, std_fraction=0.25)
     - food_sim_df (DataFrame): Wide-form dataframe of mean MP intake per food item per country.
 
     Example:
-    >>> test_sim_df, test_food_df = run_monte_carlo_simulation('simulation_data.xlsx')
-    ... test_sim_df.shape
-    (2616000,3)
+    >>> test_sim_df, test_food_df = run_monte_carlo_simulation('Data/test_food_mp_intake_data.xlsx')
+    >>> test_sim_df.columns
+    Index(['Country', 'DietGroup', 'MP_Intake'], dtype='object')
+    >>> isinstance(test_food_df, pd.DataFrame)
+    True
+    >>> test_food_df.shape[1]
+    18
     """
     food_intake = pd.read_excel(file_path, sheet_name='food_intake')
     food_intake['Country']=food_intake['Country'].str.strip()
@@ -92,8 +95,28 @@ def run_monte_carlo_simulation(file_path, n_simulations=2000, std_fraction=0.25)
     return sim_df, food_sim_df
 
 
-def plot_violin(sim_df, top=True, n=10):
-    """Plot violin plots for top or least n countries by MP intake."""
+def plot_violin(sim_df, top=True, n=10, show=True):
+    """
+    Plot violin plots for top or least n countries by MP intake.
+
+    Paramaters:
+    - sim_df (pd.DataFrame): Simulation data with 'Country', 'DietGroup', and 'MP_Intake' columns.
+    - top (bool): If True, plot top n countries; otherwise bottom n.
+    - n (int): Number of countries to plot.
+    - show (bool): If True, display the plot. Set to False for testing.
+
+    Returns
+    matplotlib.axes._axes.Axes: Axes object of the plot.
+
+    >>> test_sim_df, test_food_df = run_monte_carlo_simulation('Data/test_food_mp_intake_data.xlsx')
+    >>> test_ax = plot_violin(test_sim_df, True, 2, False)
+    >>> isinstance(test_ax, plt.Axes)
+    True
+    >>> len(test_ax.get_xticklabels())
+    2
+
+
+    """
     avg_intake = sim_df.groupby(['Country', 'DietGroup'])['MP_Intake'].mean().reset_index()
     ranked_countries = avg_intake.groupby('Country')['MP_Intake'].mean()
     target_countries = ranked_countries.nlargest(n).index.tolist() if top else ranked_countries.nsmallest(
@@ -102,24 +125,50 @@ def plot_violin(sim_df, top=True, n=10):
     subset_df = sim_df[sim_df['Country'].isin(target_countries)]
 
     plt.figure(figsize=(20, 10))
-    sns.violinplot(data=subset_df, x='Country', y='MP_Intake', hue='DietGroup', split=False, palette='Set2')
+    ax = sns.violinplot(data=subset_df, x='Country', y='MP_Intake', hue='DietGroup', split=False, palette='Set2')
     title_prefix = 'Top' if top else 'Bottom'
     plt.title(f'Monte Carlo Simulation: MP Intake by Diet Type for {title_prefix} {n} Countries')
     plt.xticks(rotation=45)
     plt.ylabel("Simulated MP Intake (mg/day)")
     plt.legend(title='Diet Type', bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout()
-    plt.show()
+    if show:
+        plt.show()
+
+    return ax
 
 
-def plot_stacked_bar(food_sim_df, top=True, n=10):
-    """Plot stacked bar chart of food items contributing to MP intake."""
+def plot_stacked_bar(food_sim_df, top=True, n=10, show=True):
+    """
+    Plot stacked bar chart of food items contributing to MP intake.
+
+    Parameters:
+    - food_sim_df (pd.DataFrame): DataFrame with countries as index and food items as columns.
+    - top (bool): If True, plot top n countries; otherwise bottom n.
+    - n (int): Number of countries to plot.
+    - show (bool): If True, display the plot. Set to False for doctest or testing.
+
+    Returns:
+    matplotlib.axes._axes.Axes: Axes object of the plot.
+
+    Example
+    -------
+    >>> test_sim_df, test_food_df = run_monte_carlo_simulation('Data/test_food_mp_intake_data.xlsx')
+    >>> test_ax = plot_stacked_bar(test_food_df, top=True, n=2, show=False)
+    >>> isinstance(test_ax, plt.Axes)
+    True
+    >>> len(test_ax.patches) > 0
+    True
+    >>> len(test_ax.containers) == 18  #for 18 different food items
+    True
+
+    """
     food_sim_df['Total_Intake'] = food_sim_df.sum(axis=1)
     target_countries = food_sim_df['Total_Intake'].nlargest(n).index.tolist() if top else food_sim_df[
         'Total_Intake'].nsmallest(n).index.tolist()
 
     food_df = food_sim_df.loc[target_countries].drop(columns='Total_Intake')
-    food_df.plot(kind='bar', stacked=True, figsize=(20, 10), colormap='tab20')
+    ax = food_df.plot(kind='bar', stacked=True, figsize=(20, 10), colormap='tab20')
     title_prefix = 'Top' if top else 'Bottom'
     plt.title(f'Contribution of Food Items to MP Intake ({title_prefix} {n} Countries)')
     plt.ylabel('Simulated MP Intake (mg/day)')
@@ -127,5 +176,7 @@ def plot_stacked_bar(food_sim_df, top=True, n=10):
     plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), title='Food Item', ncol=2)
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.show()
+    if show:
+        plt.show()
 
+    return ax
