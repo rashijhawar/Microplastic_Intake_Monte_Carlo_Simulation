@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def load_data(air_file: str, food_file: str, water_file: str) -> pd.DataFrame:
     """
     Load and merge microplastic intake data from different sources.
