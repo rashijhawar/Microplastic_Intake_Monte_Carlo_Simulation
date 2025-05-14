@@ -122,7 +122,7 @@ Total per capita microplastic intake (through food, water, and air) in milligram
 
 3. Install dependencies:
     ```bash
-   pip install -r requirement.txt
+   pip install -r requirements.txt
    
 ---
 
