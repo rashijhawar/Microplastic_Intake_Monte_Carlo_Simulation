@@ -28,11 +28,11 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 ## ✅ Phase 2 of Monte Carlo Simulation: Validation
 We ran the simulation for a subset of countries and found our results to be comparable with the published microplastic intake values for these countries.
 
-<img width="500" alt="Image" src="https://github.com/user-attachments/assets/353a9480-a673-4862-9cde-4395d11a49f5" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/353a9480-a673-4862-9cde-4395d11a49f5" />
 
 The convergence plot was as follows:
 
-<img width="600" alt="Image" src="https://github.com/user-attachments/assets/c9d6d01d-2084-477d-b6a6-cab1123aff3a" />
+<img width="800" alt="Image" src="https://github.com/user-attachments/assets/c9d6d01d-2084-477d-b6a6-cab1123aff3a" />
 
 ---
 
@@ -61,7 +61,7 @@ This chart helps give a view of the percentage contribution of each source to th
 
 Total per capita microplastic intake (through food, water, and air) in milligrams per day for each country plotted on the world map.
 
-<img width="700" alt="Image" src="https://github.com/user-attachments/assets/684d4caf-ab18-4ed4-8a6d-6fa44ac23158" />
+<img width="800" alt="Image" src="https://github.com/user-attachments/assets/684d4caf-ab18-4ed4-8a6d-6fa44ac23158" />
 
 
 ### 📊 Hypothesis 2
@@ -101,5 +101,5 @@ Total per capita microplastic intake (through food, water, and air) in milligram
 
 ## ▶️ How to Run
 Once your environment is set up and dependencies are installed, run the main script:
-```python3 main.py
-```
+```bash
+python3 main.py
