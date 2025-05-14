@@ -1,18 +1,19 @@
-# Microplastic Intake Simulation
+# Monte Carlo Simulation: Estimating Human Microplastic Intake through Food, Water, and Air
+## Team Members: Rashi Jhawar and Tejal Bhansali
 
-This project simulates daily human intake of microplastics (MP) through food consumption across different countries and dietary patterns using Monte Carlo simulations. It uses statistical modeling, including log-normal and PERT distributions, to estimate variability in intake and exposure, and visualizes results using violin and stacked bar plots.
+This project simulates daily human intake of microplastics (MP) through air, food, and water across different countries and dietary patterns using a Monte Carlo simulation. We have also tried to identify how each of the sources contributes to the total microplastic intake.
 
 ---
 
 ## 📊 Hypothesis 1
 
 - Null Hypothesis: There is no significant difference between microplastic consumption between developed and developing countries.
-- Alternative Hypothesis: There is significant difference between microplastic consumption between developed and developing countries.
+- Alternative Hypothesis: There is a significant difference between microplastic consumption between developed and developing countries.
 
 ## 📊 Hypothesis 2
 
 - Null Hypothesis: There is no significant difference in microplastic intake across different diet groups.
-- Alternative Hypothesis: There is significant difference in microplastic intake across different diet groups.
+- Alternative Hypothesis: There is a significant difference in microplastic intake across different diet groups.
 
 ---
 
@@ -32,7 +33,7 @@ This project simulates daily human intake of microplastics (MP) through food con
 - **Intake of food, water, and air** follows a **log-normal distribution**
 - **Weight of a microplastic particle** follows a **modified PERT distribution**
 - **Standard deviation** for log-normal distribution is assumed to be **25% of the mean**
-- Total microplastic exposure occurs only through 3 pathways - **food, water and air.**
+- Total microplastic exposure occurs only through 3 pathways: **food, water and air.**
 ---
 
 ## 📁 Project Structure
@@ -42,7 +43,7 @@ This project simulates daily human intake of microplastics (MP) through food con
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/mp-intake-simulation.git
+   git clone https://github.com/rashijhawar/Microplastic_Intake_Monte_Carlo_Simulation.git
    cd mp-intake-simulation
 
 2. Set up a Python evnironment:
