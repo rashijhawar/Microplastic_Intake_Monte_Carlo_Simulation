@@ -37,12 +37,13 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 ---
 
 ## 📁 Project Structure
-```.
+```
+.
 ├── data_utils.py         # Contains functions for loading and merging data
 ├── simulation.py         # Contains functions for Monte Carlo simulation
 ├── visualizations.py     # Contains code for generating plots and visual summaries of simulation results
 ├── main.py               # Main execution script
-
+```
 ---
 
 ## 🧪 Installation & Setup
