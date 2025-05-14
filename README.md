@@ -31,7 +31,7 @@ We ran the simulation for a subset of countries and found our results to be comp
 ![Image](https://github.com/user-attachments/assets/f240be05-7e62-47bd-9377-d3e46c9bdfcf)
 
 The convergence plot was as follows:
-![Image](https://github.com/user-attachments/assets/2706a647-c984-48c2-86d8-d74cd4641426)
+<img width="468" alt="Image" src="https://github.com/user-attachments/assets/c9d6d01d-2084-477d-b6a6-cab1123aff3a" />
 
 ---
 
