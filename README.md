@@ -14,7 +14,7 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 4. Microplastics consumed through air (in particles)*
 5. Microplastic weight (in mg)
 
-* Microplastic consumption values represent daily consumption by a single individual
+\* Microplastic consumption values represent daily consumption by a single individual
 
 ### Assumptions
 
@@ -28,11 +28,11 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 ## ✅ Phase 2 of Monte Carlo Simulation: Validation
 We ran the simulation for a subset of countries and found our results to be comparable with the published microplastic intake values for these countries.
 
-<img width="468" alt="Image" src="https://github.com/user-attachments/assets/353a9480-a673-4862-9cde-4395d11a49f5" />
+<img width="500" alt="Image" src="https://github.com/user-attachments/assets/353a9480-a673-4862-9cde-4395d11a49f5" />
 
 The convergence plot was as follows:
 
-<img width="468" alt="Image" src="https://github.com/user-attachments/assets/c9d6d01d-2084-477d-b6a6-cab1123aff3a" />
+<img width="600" alt="Image" src="https://github.com/user-attachments/assets/c9d6d01d-2084-477d-b6a6-cab1123aff3a" />
 
 ---
 
@@ -45,8 +45,9 @@ The convergence plot was as follows:
 
 **Results:**
 
-![Image](https://github.com/user-attachments/assets/fc829593-c6fc-4f10-9737-612a4fc38dc5)
 We observed that there was not much of a difference in microplastic consumption between developed and developing countries. Therefore, we concluded that microplastic intake did not depend on whether a country was developing or developed, and hence, we accept the null hypothesis.​
+
+![Image](https://github.com/user-attachments/assets/fc829593-c6fc-4f10-9737-612a4fc38dc5)
 
 **Some more visualizations from the simulation:**
 
@@ -60,7 +61,7 @@ This chart helps give a view of the percentage contribution of each source to th
 
 Total per capita microplastic intake (through food, water, and air) in milligrams per day for each country plotted on the world map.
 
-<img width="468" alt="Image" src="https://github.com/user-attachments/assets/684d4caf-ab18-4ed4-8a6d-6fa44ac23158" />
+<img width="700" alt="Image" src="https://github.com/user-attachments/assets/684d4caf-ab18-4ed4-8a6d-6fa44ac23158" />
 
 
 ### 📊 Hypothesis 2
