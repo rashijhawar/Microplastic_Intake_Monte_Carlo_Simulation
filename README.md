@@ -37,6 +37,11 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 ---
 
 ## 📁 Project Structure
+.
+├── data_utils.py         # Contains functions for loading and merging data
+├── simulation.py         # Contains functions for Monte Carlo simulation
+├── visualizations.py     # Contains code for generating plots and visual summaries of simulation results
+├── main.py               # Main execution script
 
 ---
 ## 🧪 Installation & Setup
@@ -44,7 +49,7 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 1. Clone the repo:
    ```bash
    git clone https://github.com/rashijhawar/Microplastic_Intake_Monte_Carlo_Simulation.git
-   cd mp-intake-simulation
+   cd Microplastic_Intake_Monte_Carlo_Simulation
 
 2. Set up a Python evnironment:
     ```bash
@@ -58,5 +63,5 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 ---
 
 ## How to Run
-
-
+Once your environment is set up and dependencies are installed, run the main script:
+```python3 main.py
