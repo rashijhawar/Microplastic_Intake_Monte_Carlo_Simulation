@@ -45,6 +45,7 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 ├── main.py               # Main execution script
 
 ---
+
 ## 🧪 Installation & Setup
 
 1. Clone the repo:
