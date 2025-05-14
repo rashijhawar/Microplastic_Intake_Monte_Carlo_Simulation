@@ -1,9 +1,41 @@
 # Monte Carlo Simulation: Estimating Human Microplastic Intake through Food, Water, and Air
 ## Team Members: Rashi Jhawar and Tejal Bhansali
 
+## Project Overview
 This project simulates daily human intake of microplastics (MP) through air, food, and water across different countries and dietary patterns using a Monte Carlo simulation. We have also tried to identify how each of the sources contributes to the total microplastic intake.
 
 ---
+
+## Phase 1 of Monte Carlo Simulation: Design
+### Random Variables
+1. Daily per capita intake for 18 food categories ​(in g)
+2. Microplastic concentration in a gram of different categories of food (in mg of microplastic/g of food)
+3. Microplastics consumed through water (in mg)*
+4. Microplastics consumed through air (in particles)*
+5. Microplastic weight (in mg)
+
+* Microplastic consumption values represent daily consumption by a single individual
+
+### 🧮 Assumptions
+
+- **Intake of food, water, and air** follows a **log-normal distribution**
+- **Weight of a microplastic particle** follows a **modified PERT distribution**
+- **Standard deviation** for log-normal distribution is assumed to be **25% of the mean**
+- Total microplastic exposure occurs only through 3 pathways: **food, water and air.**
+
+---
+
+## Phase 2 of Monte Carlo Simulation: Validation
+We ran the simulation for a subset of countries and found our results to be comparable with the published microplastic intake values for these countries.
+
+![Image](https://github.com/user-attachments/assets/f240be05-7e62-47bd-9377-d3e46c9bdfcf)
+
+The convergence plot was as follows:
+![Image](https://github.com/user-attachments/assets/2706a647-c984-48c2-86d8-d74cd4641426)
+
+---
+
+## Phase 3 of Monte Carlo Simulation: Experimentation
 
 ## 📊 Hypothesis 1
 
@@ -15,25 +47,6 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 - Null Hypothesis: There is no significant difference in microplastic intake across different diet groups.
 - Alternative Hypothesis: There is a significant difference in microplastic intake across different diet groups.
 
----
-
-## 📊 Project Features
-
-- Monte Carlo simulations of MP intake using log-normal distributions
-- Per-country and per-diet analysis of intake
-- Violin plots to visualize MP intake distributions
-- Stacked bar charts to show food item contributions
-- Doctests for simulation and plotting functions
-- Supports custom Excel datasets for intake and concentration
-
----
-
-## 🧮 Assumptions
-
-- **Intake of food, water, and air** follows a **log-normal distribution**
-- **Weight of a microplastic particle** follows a **modified PERT distribution**
-- **Standard deviation** for log-normal distribution is assumed to be **25% of the mean**
-- Total microplastic exposure occurs only through 3 pathways: **food, water and air.**
 ---
 
 ## 📁 Project Structure
@@ -66,4 +79,4 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 
 ## How to Run
 Once your environment is set up and dependencies are installed, run the main script:
-```python3 main.py
+```python3 main.py```
