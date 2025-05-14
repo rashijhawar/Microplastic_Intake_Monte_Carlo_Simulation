@@ -1,12 +1,12 @@
 # Monte Carlo Simulation: Estimating Human Microplastic Intake through Food, Water, and Air
 ## Team Members: Rashi Jhawar and Tejal Bhansali
 
-## Project Overview
+## 💡 Project Overview
 This project simulates daily human intake of microplastics (MP) through air, food, and water across different countries and dietary patterns using a Monte Carlo simulation. We have also tried to identify how each of the sources contributes to the total microplastic intake.
 
 ---
 
-## Phase 1 of Monte Carlo Simulation: Design
+## 🧩 Phase 1 of Monte Carlo Simulation: Design
 ### Random Variables
 1. Daily per capita intake for 18 food categories ​(in g)
 2. Microplastic concentration in a gram of different categories of food (in mg of microplastic/g of food)
@@ -16,7 +16,7 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 
 * Microplastic consumption values represent daily consumption by a single individual
 
-### 🧮 Assumptions
+### Assumptions
 
 - **Intake of food, water, and air** follows a **log-normal distribution**
 - **Weight of a microplastic particle** follows a **modified PERT distribution**
@@ -25,17 +25,18 @@ This project simulates daily human intake of microplastics (MP) through air, foo
 
 ---
 
-## Phase 2 of Monte Carlo Simulation: Validation
+## ✅ Phase 2 of Monte Carlo Simulation: Validation
 We ran the simulation for a subset of countries and found our results to be comparable with the published microplastic intake values for these countries.
 
 <img width="468" alt="Image" src="https://github.com/user-attachments/assets/353a9480-a673-4862-9cde-4395d11a49f5" />
 
-The convergence plot was as follows:<br>
+The convergence plot was as follows:
+
 <img width="468" alt="Image" src="https://github.com/user-attachments/assets/c9d6d01d-2084-477d-b6a6-cab1123aff3a" />
 
 ---
 
-## Phase 3 of Monte Carlo Simulation: Experimentation
+## 🧪 Phase 3 of Monte Carlo Simulation: Experimentation
 
 ### 📊 Hypothesis 1
 
@@ -43,17 +44,22 @@ The convergence plot was as follows:<br>
 - Alternative Hypothesis: There is a significant difference between microplastic consumption between developed and developing countries.
 
 **Results:**
+
 ![Image](https://github.com/user-attachments/assets/fc829593-c6fc-4f10-9737-612a4fc38dc5)
 We observed that there was not much of a difference in microplastic consumption between developed and developing countries. Therefore, we concluded that microplastic intake did not depend on whether a country was developing or developed, and hence, we accept the null hypothesis.​
 
 **Some more visualizations from the simulation:**
+
 This chart shows the top 15 countries with the highest daily microplastic intake per person, measured in milligrams per day.​
+
 ![Image](https://github.com/user-attachments/assets/d9640e63-3a7a-49a8-8b3b-46f59feb2814)
 
 This chart helps give a view of the percentage contribution of each source to the total intake.
+
 ![Image](https://github.com/user-attachments/assets/56a7cedc-f1f2-4363-9dd0-c3f0af50915a)
 
 Total per capita microplastic intake (through food, water, and air) in milligrams per day for each country plotted on the world map.
+
 <img width="468" alt="Image" src="https://github.com/user-attachments/assets/684d4caf-ab18-4ed4-8a6d-6fa44ac23158" />
 
 
@@ -74,7 +80,7 @@ Total per capita microplastic intake (through food, water, and air) in milligram
 ```
 ---
 
-## 🧪 Installation & Setup
+## ⚙️ Installation & Setup
 
 1. Clone the repo:
    ```bash
@@ -92,6 +98,7 @@ Total per capita microplastic intake (through food, water, and air) in milligram
    
 ---
 
-## How to Run
+## ▶️ How to Run
 Once your environment is set up and dependencies are installed, run the main script:
-```python3 main.py```
+```python3 main.py
+```
