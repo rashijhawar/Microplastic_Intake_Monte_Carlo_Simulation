@@ -70,7 +70,7 @@ Total per capita microplastic intake (through food, water, and air) in milligram
 - Alternative Hypothesis: There is a significant difference in microplastic intake across different diet groups.
 
 ---
-## Limitations and Future Scope
+## 🚧 Limitations and Future Scope
 
 * First, microplastics vary greatly in size, composition, and density, making it difficult to standardize their measurement and compare across studies.​
 ​
@@ -83,17 +83,17 @@ Total per capita microplastic intake (through food, water, and air) in milligram
 * Lastly, our study was focused on 4 diet groups comprising of 18 food items in total, which can be broadened as a future scope.​
 
 ---
-## References
+## 📚 References
 
-https://measurlabs.com/blog/microplastic-testing-standard-iso-24187/ ​
-https://ehp.niehs.nih.gov/doi/full/10.1289/EHP8936 ​
-https://pubs.acs.org/doi/epdf/10.1021/acs.est.4c00010?ref=article_openPDF ​
-https://www.fda.gov/food/nutrition-education-resources-materials/sodium-your-diet​
-https://www.sciencedirect.com/science/article/pii/S0013935120305703#sec3​
-https://www.sciencedirect.com/science/article/abs/pii/S0304389421007421?via%3Dihub​
-https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2022_ANNEX.pdf ​
-https://ourworldindata.org/plastic-pollution​
-https://data.worldbank.org/indicator/NY.GDP.MKTP.CD​
+* https://measurlabs.com/blog/microplastic-testing-standard-iso-24187/ ​
+* https://ehp.niehs.nih.gov/doi/full/10.1289/EHP8936 ​
+* https://pubs.acs.org/doi/epdf/10.1021/acs.est.4c00010?ref=article_openPDF ​
+* https://www.fda.gov/food/nutrition-education-resources-materials/sodium-your-diet​
+* https://www.sciencedirect.com/science/article/pii/S0013935120305703#sec3​
+* https://www.sciencedirect.com/science/article/abs/pii/S0304389421007421?via%3Dihub​
+* https://www.un.org/development/desa/dpad/wp-content/uploads/sites/45/WESP2022_ANNEX.pdf ​
+* https://ourworldindata.org/plastic-pollution​
+* https://data.worldbank.org/indicator/NY.GDP.MKTP.CD​
 ​
 ---
 
@@ -102,7 +102,8 @@ https://data.worldbank.org/indicator/NY.GDP.MKTP.CD​
 .
 ├── data_utils.py         # Contains functions for loading and merging data
 ├── simulation.py         # Contains functions for Monte Carlo simulation
-├── visualizations.py     # Contains code for generating plots and visual summaries of simulation results
+├── visualizations.py     # Contains functions for generating plots 
+                            and visual summaries of simulation results
 ├── main.py               # Main execution script
 ```
 ---
