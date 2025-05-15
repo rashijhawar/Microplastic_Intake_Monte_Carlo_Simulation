@@ -62,7 +62,6 @@ def filter_data(data: pd.DataFrame, countries: list) -> pd.DataFrame:
 def load_country_indicators_data(country_means: pd.DataFrame) -> pd.DataFrame:
     """
     Load and merge country indicator data from multiple sources with microplastic data.
-    Includes exception handling for robust operation.
 
     :param country_means: A DataFrame containing the mean values for each country.
     :return: A DataFrame containing the combined indicator data.
@@ -89,28 +88,61 @@ def load_country_indicators_data(country_means: pd.DataFrame) -> pd.DataFrame:
 
     # Development status mapping
     development_status = {
-        'Canada': 'Developed', 'United States': 'Developed', 'Mexico': 'Developing',
-        'Cuba': 'Developing', 'Dominican Republic': 'Developing', 'Dominica': 'Developing',
-        'Saint Lucia': 'Developing', 'Barbados': 'Developing', 'Brazil': 'Developing',
-        'Argentina': 'Developing', 'Bolivia': 'Developing', 'Paraguay': 'Developing',
-        'Peru': 'Developing', 'Colombia': 'Developing', 'Venezuela': 'Developing',
-        'Uruguay': 'Developing', 'China': 'Developing', 'United Kingdom': 'Developed',
-        'France': 'Developed', 'India': 'Developing', 'Indonesia': 'Developing',
-        'Mongolia': 'Developing', 'Russia': 'Developing', 'Australia': 'Developed',
-        'Sri Lanka': 'Developing', 'Pakistan': 'Developing', 'Bangladesh': 'Developing',
-        'Iran': 'Developing', 'Saudi Arabia': 'Developing', 'Iraq': 'Developing',
-        'Turkey': 'Developing', 'Sweden': 'Developed', 'Germany': 'Developed',
-        'Ireland': 'Developed', 'Spain': 'Developed', 'Portugal': 'Developed',
-        'Switzerland': 'Developed', 'Austria': 'Developed', 'Slovakia': 'Developed',
-        'Hungary': 'Developed', 'Croatia': 'Developed', 'Bosnia and Herzegovina': 'Developing',
-        'Serbia': 'Developing', 'Romania': 'Developed', 'Ukraine': 'Developing',
-        'Philippines': 'Developing', 'Malaysia': 'Developing', 'Vietnam': 'Developing',
-        'Cambodia': 'Developing', 'Thailand': 'Developing', 'South Korea': 'Developing',
+        'Canada': 'Developed', 
+        'United States': 'Developed', 
+        'Mexico': 'Developing',
+        'Cuba': 'Developing', 
+        'Dominican Republic': 'Developing', 
+        'Dominica': 'Developing',
+        'Saint Lucia': 'Developing', 
+        'Barbados': 'Developing', 
+        'Brazil': 'Developing',
+        'Argentina': 'Developing', 
+        'Bolivia': 'Developing', 
+        'Paraguay': 'Developing',
+        'Peru': 'Developing', 
+        'Colombia': 'Developing',
+        'Venezuela': 'Developing',
+        'Uruguay': 'Developing', 
+        'China': 'Developing', 
+        'United Kingdom': 'Developed',
+        'France': 'Developed', 
+        'India': 'Developing', 
+        'Indonesia': 'Developing',
+        'Mongolia': 'Developing', 
+        'Russia': 'Developing', 
+        'Australia': 'Developed',
+        'Sri Lanka': 'Developing', 
+        'Pakistan': 'Developing', 
+        'Bangladesh': 'Developing',
+        'Iran': 'Developing', 
+        'Saudi Arabia': 'Developing', 
+        'Iraq': 'Developing',
+        'Turkey': 'Developing', 
+        'Sweden': 'Developed', 
+        'Germany': 'Developed',
+        'Ireland': 'Developed', 
+        'Spain': 'Developed', 
+        'Portugal': 'Developed',
+        'Switzerland': 'Developed', 
+        'Austria': 'Developed', 
+        'Slovakia': 'Developed',
+        'Hungary': 'Developed', 
+        'Croatia': 'Developed', 
+        'Bosnia and Herzegovina': 'Developing',
+        'Serbia': 'Developing', 
+        'Romania': 'Developed', 
+        'Ukraine': 'Developing',
+        'Philippines': 'Developing', 
+        'Malaysia': 'Developing', 
+        'Vietnam': 'Developing',
+        'Cambodia': 'Developing', 
+        'Thailand': 'Developing', 
+        'South Korea': 'Developing',
         'Japan': 'Developed'
     }
     development_status_df = pd.DataFrame(list(development_status.items()), columns=['Country', 'Development Status'])
 
-    # Merge datasets
     try:
         merged_data = pd.merge(development_status_df, gdp_data, on='Country', how='inner')
         merged_data = pd.merge(merged_data, waste_data, on='Country', how='inner')
@@ -118,7 +150,6 @@ def load_country_indicators_data(country_means: pd.DataFrame) -> pd.DataFrame:
     except Exception as e:
         raise RuntimeError(f"Error while merging data: {e}")
 
-    # GDP in trillions
     if 'GDP (current US$) - 2023' not in merged_data.columns:
         raise KeyError("GDP column missing after merge.")
     merged_data['GDP (Trillion US$)'] = merged_data['GDP (current US$) - 2023'] / 1_000_000_000_000

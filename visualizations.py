@@ -6,6 +6,7 @@ import warnings
 from geopy.geocoders import Nominatim
 import time
 import plotly.express as px
+from simulation import run_monte_carlo_simulation_hypothesis2
 
 plt.style.use('seaborn-v0_8-whitegrid')
 warnings.filterwarnings('ignore')
@@ -29,6 +30,30 @@ def plot_total_daily_mp_intake(country_means: pd.DataFrame) -> None:
     plt.title('Total Daily Microplastic Intake Per Capita (Top 15 Countries)', fontsize=14)
     plt.xlabel('Country', fontsize=12)
     plt.ylabel('Total Microplastic Intake (mg/day)', fontsize=12)
+    plt.xticks(rotation=90)
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_total_annual_mp_intake(country_means: pd.DataFrame) -> None:
+    """
+    Create a bar chart showing total annual microplastic intake by country.
+
+    :param country_means: A DataFrame containing the mean values for each country.
+    """
+    plt.figure(figsize=(12, 6))
+    
+    ax = plt.bar(country_means['Country'], country_means['Annual_MP_Total (in grams)'], color='mediumaquamarine')
+
+    for bar, value in zip(ax, country_means['Annual_MP_Total (in grams)']):
+        plt.text(bar.get_x() + bar.get_width() / 2,
+                 value + 0.01 * max(country_means['Annual_MP_Total (in grams)']), f'{value:.2f}',
+                 ha='center', va='bottom', fontsize=9)
+
+    plt.title('Total Annual Microplastic Intake Per Capita (Top 15 Countries)', fontsize=14)
+    plt.xlabel('Country', fontsize=12)
+    plt.ylabel('Total Microplastic Intake (g/year)', fontsize=12)
     plt.xticks(rotation=90)
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.tight_layout()
@@ -201,7 +226,7 @@ def plot_violin(sim_df: pd.DataFrame, top: bool = True, n: int = 10, show: bool 
     :param n: Number of countries to plot.
     :param show: If True, display the plot. Set to False for testing.
 
-    >>> test_sim_df, test_food_df = run_monte_carlo_simulation('Data/test_food_mp_intake_data.xlsx')
+    >>> test_sim_df, test_food_df = run_monte_carlo_simulation_hypothesis2('Data/test_food_mp_intake_data.xlsx')
     >>> test_ax = plot_violin(test_sim_df, True, 2, False)
     >>> isinstance(test_ax, plt.Axes)
     True
@@ -225,6 +250,8 @@ def plot_violin(sim_df: pd.DataFrame, top: bool = True, n: int = 10, show: bool 
     plt.tight_layout()
     if show:
         plt.show()
+    
+    return ax
 
 
 def plot_stacked_bar(food_sim_df: pd.DataFrame, top: bool = True, n: int = 10, show: bool = True):
@@ -236,7 +263,7 @@ def plot_stacked_bar(food_sim_df: pd.DataFrame, top: bool = True, n: int = 10, s
     :param n: Number of countries to plot.
     :param show: If True, display the plot. Set to False for doctest or testing.
 
-    >>> test_sim_df, test_food_df = run_monte_carlo_simulation('Data/test_food_mp_intake_data.xlsx')
+    >>> test_sim_df, test_food_df = run_monte_carlo_simulation_hypothesis2('Data/test_food_mp_intake_data.xlsx')
     >>> test_ax = plot_stacked_bar(test_food_df, top=True, n=2, show=False)
     >>> isinstance(test_ax, plt.Axes)
     True
@@ -260,3 +287,5 @@ def plot_stacked_bar(food_sim_df: pd.DataFrame, top: bool = True, n: int = 10, s
     plt.tight_layout()
     if show:
         plt.show()
+
+    return ax

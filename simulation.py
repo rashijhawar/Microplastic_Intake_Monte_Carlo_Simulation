@@ -149,6 +149,7 @@ def run_monte_carlo_simulation(mp_intake_data: pd.DataFrame, food_intake_data: p
 
     final_results['Monthly_MP_Total (in grams)'] = final_results['Daily_MP_Total'] * 30 / 1000
     final_results['Monthly_MP_Ingestion (in grams)'] = final_results['Daily_MP_Ingestion'] * 30 / 1000
+    final_results['Annual_MP_Total (in grams)'] = final_results['Daily_MP_Total'] * 365 / 1000
 
     return final_results
 
@@ -182,7 +183,6 @@ def plot_convergence(simulation_results: pd.DataFrame, country_list: list = None
     plt.xlabel('Number of Simulations', fontsize=12)
     plt.ylabel('Total Microplastic Intake (mg/day)', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.7)
-    #plt.legend(title='Country', fontsize=10, loc="best")
     plt.legend(title='Country', fontsize=10, loc='center left', bbox_to_anchor=(1, 0.5))
     plt.tight_layout()
     plt.show()
@@ -215,7 +215,7 @@ def calculate_country_means(simulation_results: pd.DataFrame, verbose: bool = Tr
     country_means = simulation_results.groupby('Country')[
         ['Daily_MP_Inhalation', 'Daily_MP_Ingestion', 'Daily_MP_Total', 
          'Monthly_MP_Total (in grams)', 'Monthly_MP_Ingestion (in grams)',
-         'Inhalation_Contribution_Pct', 'Ingestion_Contribution_Pct']
+         'Inhalation_Contribution_Pct', 'Ingestion_Contribution_Pct', 'Annual_MP_Total (in grams)']
     ].mean().reset_index()
     country_means.sort_values('Daily_MP_Total', ascending=False, inplace=True)
 
@@ -273,40 +273,43 @@ def run_monte_carlo_simulation_hypothesis2(file_path: str, n_simulations: int = 
     food_sim_results = []
 
     for country in food_intake_df.index:
-        food_item_sums = {}
-        for diet_name, food_items in diet_groups.items():
-            # valid_items = [item for item in food_items if item in food_intake_df.index and not pd.isna(food_intake_df[item])]
-            sims = np.zeros(n_simulations)
+        try:
+            food_item_sums = {}
+            for diet_name, food_items in diet_groups.items():
+                # valid_items = [item for item in food_items if item in food_intake_df.index and not pd.isna(food_intake_df[item])]
+                sims = np.zeros(n_simulations)
 
-            for food in food_items:
-                mean_intake = food_intake_df.loc[country, food]
-                std = std_fraction * mean_intake
-                if mean_intake > 0:
-                    sigma = np.sqrt(np.log(1 + (std / mean_intake) ** 2))
-                    mu = np.log(mean_intake) - 0.5 * sigma ** 2
-                    samples_intake = np.random.lognormal(mean=mu, sigma=sigma, size=n_simulations)
-                else:
-                    samples_intake = np.zeros(n_simulations)
+                for food in food_items:
+                    mean_intake = food_intake_df.loc[country, food]
+                    std = std_fraction * mean_intake
+                    if mean_intake > 0:
+                        sigma = np.sqrt(np.log(1 + (std / mean_intake) ** 2))
+                        mu = np.log(mean_intake) - 0.5 * sigma ** 2
+                        samples_intake = np.random.lognormal(mean=mu, sigma=sigma, size=n_simulations)
+                    else:
+                        samples_intake = np.zeros(n_simulations)
 
-                mean_conc = mp_concentration_df.loc[country, food]
-                std = std_fraction * mean_conc
-                if mean_conc > 0:
-                    sigma = np.sqrt(np.log(1 + (std / mean_conc) ** 2))
-                    mu = np.log(mean_conc) - 0.5 * sigma ** 2
-                    samples_conc = np.random.lognormal(mean=mu, sigma=sigma, size=n_simulations)
-                else:
-                    samples_conc = np.zeros(n_simulations)
-                samples_mp_intake = samples_intake * samples_conc
-                food_item_sums[food] = samples_mp_intake.mean()
-                sims += samples_mp_intake
+                    mean_conc = mp_concentration_df.loc[country, food]
+                    std = std_fraction * mean_conc
+                    if mean_conc > 0:
+                        sigma = np.sqrt(np.log(1 + (std / mean_conc) ** 2))
+                        mu = np.log(mean_conc) - 0.5 * sigma ** 2
+                        samples_conc = np.random.lognormal(mean=mu, sigma=sigma, size=n_simulations)
+                    else:
+                        samples_conc = np.zeros(n_simulations)
+                    samples_mp_intake = samples_intake * samples_conc
+                    food_item_sums[food] = samples_mp_intake.mean()
+                    sims += samples_mp_intake
 
-            for val in sims:
-                results.append({
-                    'Country': country,
-                    'DietGroup': diet_name,
-                    'MP_Intake': val
-                })
-        food_sim_results.append({'Country': country, **food_item_sums})
+                for val in sims:
+                    results.append({
+                        'Country': country,
+                        'DietGroup': diet_name,
+                        'MP_Intake': val
+                    })
+            food_sim_results.append({'Country': country, **food_item_sums})
+        except Exception as e:
+            print(f"Error processing country {country}: {e}")
 
     sim_df = pd.DataFrame(results)
     food_sim_df = pd.DataFrame(food_sim_results).set_index('Country')
