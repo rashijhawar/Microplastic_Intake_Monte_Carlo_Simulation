@@ -69,6 +69,31 @@ Total per capita microplastic intake (through food, water, and air) in milligram
 - Null Hypothesis: There is no significant difference in microplastic intake across different diet groups.
 - Alternative Hypothesis: There is a significant difference in microplastic intake across different diet groups.
 
+**Results:**
+
+The violin plots for top 20 countries clearly highlight the distribution and variation within each diet group. 
+Notably, there’s a visible difference between animal-based and plant-based diet groups, suggesting a statistically significant impact of dietary choices on microplastic exposure.
+
+![Image](https://github.com/user-attachments/assets/0311a938-c1c8-4dc6-8f69-d7afb9018092)
+
+
+The below graph shows that seafood is the primary contributor to microplastic intake in the top 10 countries shown. 
+Marine organisms ingest plastic waste dumped into the oceans, and microplastics accumulate in certain body parts. When these parts are consumed by humans, microplastics enter our bodies as well.
+![Image](https://github.com/user-attachments/assets/a9f8d898-4bea-4bcd-8531-6c9f77c5d675)
+
+
+Here’s where it gets interesting. In some countries, the microplastic intake among vegetarians and vegans is nearly comparable to that of omnivores and pescatarians.
+This suggests that even though plant-based foods generally contain lower concentrations of microplastics, the sheer volume consumed — especially staples like grains, vegetables, and fruits — can significantly contribute to overall exposure.
+![Image](https://github.com/user-attachments/assets/2b1f13f5-becf-4b46-8c21-67a2cf014e82)
+
+Refined grains, shown in green, contribute to a large portion of the overall intake across many countries.
+And that orange segment? That’s milk! A surprising but consistent contributor.
+![Image](https://github.com/user-attachments/assets/820865d8-5fc5-4942-9b8d-7b9435aaadaa)
+
+What this analysis reveals is important: diet group — vegetarian, vegan, or omnivore — determines your overall microplastic intake.
+
+
+
 ---
 ## 🚧 Limitations and Future Scope
 
