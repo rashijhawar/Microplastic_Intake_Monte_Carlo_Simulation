@@ -90,7 +90,7 @@ Refined grains, shown in green, contribute to a large portion of the overall int
 And that orange segment? That’s milk! A surprising but consistent contributor.
 ![Image](https://github.com/user-attachments/assets/820865d8-5fc5-4942-9b8d-7b9435aaadaa)
 
-What this analysis reveals is important: diet group — vegetarian, vegan, or omnivore — determines your overall microplastic intake.
+What this analysis reveals is important: diet group — vegetarian, vegan, or omnivore — determines your overall microplastic intake.
 
 
 
